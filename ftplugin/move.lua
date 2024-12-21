@@ -43,7 +43,6 @@ if not vim.g.loaded_movelang then
   end
 
   local commands = require('movelang.commands')
-  commands.create_rustc_command()
 end
 
 vim.g.loaded_movelang = true

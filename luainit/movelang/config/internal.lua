@@ -1,5 +1,5 @@
 local types = require('movelang.types.internal')
-local move = require('movelang.move')
+-- local move = require('movelang.move')
 local config = require('movelang.config')
 local executors = require('movelang.executors')
 local os = require('movelang.os')
@@ -166,11 +166,11 @@ local MovelangDefaultConfig = {
     end,
     ---@type string[] | fun():string[]
     cmd = function()
-      return { 'move-analyzer' }
+      return { 'move-analyzer', '--log-file', MovelangConfig.server.logfile }
     end,
 
     ---@type string | fun(filename: string, default: fun(filename: string):string|nil):string|nil
-    root_dir = move.get_root_dir,
+    root_dir = cargo.get_root_dir,
 
     --- standalone file support
     --- setting it to false may improve startup time

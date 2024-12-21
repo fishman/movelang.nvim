@@ -37,6 +37,17 @@ function M.validate(cfg)
     return false, err
   end
   local tools = cfg.tools
+  local crate_graph = tools.crate_graph
+  ok, err = validate('tools.crate_graph', {
+    backend = { crate_graph.backend, 'string', true },
+    enabled_graphviz_backends = { crate_graph.enabled_graphviz_backends, 'table', true },
+    full = { crate_graph.full, 'boolean' },
+    output = { crate_graph.output, 'string', true },
+    pipe = { crate_graph.pipe, 'string', true },
+  })
+  if not ok then
+    return false, err
+  end
   local hover_actions = tools.hover_actions
   ok, err = validate('tools.hover_actions', {
     replace_builtin_hover = { hover_actions.replace_builtin_hover, 'boolean' },
@@ -48,6 +59,13 @@ function M.validate(cfg)
   ok, err = validate('tools.float_win_config', {
     auto_focus = { float_win_config.auto_focus, 'boolean' },
     open_split = { float_win_config.open_split, 'string' },
+  })
+  if not ok then
+    return false, err
+  end
+  local rustc = tools.rustc
+  ok, err = validate('tools.rustc', {
+    default_edition = { rustc.default_edition, 'string' },
   })
   if not ok then
     return false, err

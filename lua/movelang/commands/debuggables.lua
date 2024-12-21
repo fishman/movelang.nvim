@@ -1,0 +1,212 @@
+local M = {}
+
+local ra_runnables = require('movelang.runnables')
+local config = require('movelang.config.internal')
+
+---@return { textDocument: lsp_text_document, position: nil }
+local function get_params()
+  return {
+    textDocument = vim.lsp.util.make_text_document_params(),
+    position = nil, -- get em all
+  }
+end
+
+---@type { [string]: boolean? } Used to prevent this plugin from adding the same configuration twice
+local _dap_configuration_added = {}
+
+---@param args movelang.RARunnableArgs
+---@return string
+local function build_label(args)
+  local ret = ''
+  for _, value in ipairs(args.cargoArgs) do
+    ret = ret .. value .. ' '
+  end
+
+  for _, value in ipairs(args.cargoExtraArgs or {}) do
+    ret = ret .. value .. ' '
+  end
+
+  if not vim.tbl_isempty(args.executableArgs) then
+    ret = ret .. '-- '
+    for _, value in ipairs(args.executableArgs) do
+      ret = ret .. value .. ' '
+    end
+  end
+  return ret
+end
+
+---@param result movelang.RARunnable[]
+---@return string[] option_strings
+local function get_options(result)
+  ---@type string[]
+  local option_strings = {}
+
+  for _, debuggable in ipairs(result) do
+    local label = build_label(debuggable.args)
+    local str = label
+    table.insert(option_strings, str)
+  end
+
+  return option_strings
+end
+
+---@param args movelang.RARunnableArgs
+---@return boolean
+local function is_valid_test(args)
+  local is_not_cargo_check = args.cargoArgs[1] ~= 'check'
+  return is_not_cargo_check
+end
+
+-- move-analyzer doesn't actually support giving a list of debuggable targets,
+-- so work around that by manually removing non debuggable targets (only cargo
+-- check for now).
+-- This function also makes it so that the debuggable commands are more
+-- debugging friendly. For example, we move cargo run to cargo build, and cargo
+-- test to cargo test --no-run.
+---@param result movelang.RARunnable[]
+local function sanitize_results_for_debugging(result)
+  ---@type movelang.RARunnable[]
+  local ret = vim.tbl_filter(function(value)
+    ---@cast value movelang.RARunnable
+    return is_valid_test(value.args)
+  end, result or {})
+
+  local overrides = require('movelang.overrides')
+  for _, value in ipairs(ret) do
+    overrides.sanitize_command_for_debugging(value.args.cargoArgs)
+  end
+
+  return ret
+end
+
+local function dap_run(args)
+  local rt_dap = require('movelang.dap')
+  local ok, dap = pcall(require, 'dap')
+  if ok then
+    ---@diagnostic disable-next-line: invisible
+    rt_dap.start(args, true, dap.run)
+    local cached_commands = require('movelang.cached_commands')
+    cached_commands.set_last_debuggable(args)
+  else
+    vim.notify('nvim-dap is required for debugging', vim.log.levels.ERROR)
+    return
+  end
+end
+
+---@param debuggables movelang.RARunnable[]
+---@param executableArgsOverride? string[]
+local function ui_select_debuggable(debuggables, executableArgsOverride)
+  debuggables = ra_runnables.apply_exec_args_override(executableArgsOverride, debuggables)
+  local options = get_options(debuggables)
+  if #options == 0 then
+    return
+  end
+  vim.ui.select(options, { prompt = 'Debuggables', kind = 'rust-tools/debuggables' }, function(_, choice)
+    if choice == nil then
+      return
+    end
+    local args = debuggables[choice].args
+    dap_run(args)
+  end)
+end
+
+---@param debuggables movelang.RARunnable[]
+local function add_debuggables_to_nvim_dap(debuggables)
+  local ok, dap = pcall(require, 'dap')
+  if not ok then
+    return
+  end
+  local rt_dap = require('movelang.dap')
+  dap.configurations.rust = dap.configurations.rust or {}
+  -- To prevent parallel 'cargo build" processes, we
+  -- iterate over the debuggables using a recursive function.
+  -- We can't use vim.system():wait(), because it blocks the UI.
+  local iter = vim.iter(debuggables)
+  ---@type function
+  local go
+  go = function()
+    local debuggable = iter:next()
+    if not debuggable then
+      return
+    end
+    ---@diagnostic disable-next-line: invisible
+    rt_dap.start(debuggable.args, false, function(configuration)
+      local name = 'Cargo: ' .. build_label(debuggable.args)
+      if not _dap_configuration_added[name] then
+        configuration.name = name
+        table.insert(dap.configurations.rust, configuration)
+        _dap_configuration_added[name] = true
+      end
+      go()
+    end)
+  end
+  pcall(go) -- Ignore stack overflow errors
+end
+
+---@param debuggables movelang.RARunnable[]
+---@param executableArgsOverride? string[]
+local function debug_at_cursor_position(debuggables, executableArgsOverride)
+  if debuggables == nil then
+    return
+  end
+  debuggables = ra_runnables.apply_exec_args_override(executableArgsOverride, debuggables)
+  local choice = ra_runnables.get_runnable_at_cursor_position(debuggables)
+  if not choice then
+    vim.notify('No debuggable targets found for the current position.', vim.log.levels.ERROR)
+    return
+  end
+  local args = debuggables[choice].args
+  dap_run(args)
+end
+
+---@param callback fun(result:movelang.RARunnable[])
+local function mk_handler(callback)
+  return function(_, result, _, _)
+    ---@cast result movelang.RARunnable[]
+    if result == nil then
+      return
+    end
+    result = sanitize_results_for_debugging(result)
+    callback(result)
+  end
+end
+
+local rl = require('movelang.move_analyzer')
+
+---@param handler? lsp.Handler See |lsp-handler|
+local function runnables_request(handler)
+  rl.buf_request(0, 'experimental/runnables', get_params(), handler)
+end
+
+---Sends the request to move-analyzer to get the debuggables and handles them
+---@param executableArgsOverride? string[]
+function M.debuggables(executableArgsOverride)
+  runnables_request(mk_handler(function(debuggables)
+    ui_select_debuggable(debuggables, executableArgsOverride)
+  end))
+end
+
+---Runs the debuggable under the cursor, if present
+---@param executableArgsOverride? string[]
+function M.debug(executableArgsOverride)
+  runnables_request(mk_handler(function(debuggables)
+    debug_at_cursor_position(debuggables, executableArgsOverride)
+  end))
+end
+
+--- Sends the request to move-analyzer to get the debuggables and adds them to nvim-dap's
+--- configurations
+function M.add_dap_debuggables()
+  -- Defer, because move-analyzer may not be ready yet
+  runnables_request(mk_handler(add_debuggables_to_nvim_dap))
+  local timer = vim.uv.new_timer()
+  timer:start(
+    2000,
+    0,
+    vim.schedule_wrap(function()
+      runnables_request(mk_handler(add_debuggables_to_nvim_dap))
+    end)
+  )
+end
+
+return M

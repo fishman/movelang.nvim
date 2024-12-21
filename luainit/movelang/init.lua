@@ -49,7 +49,7 @@
 ---              Searches for diagnostics only in the
 ---              current cursor line.
 --- 'renderDiagnostic {cycle?|current?}' - Display a hover window with the rendered diagnostic,
----            as displayed during |move build|.
+---            as displayed during |cargo build|.
 ---            - If called with |cycle| or no args:
 ---              Like |vim.diagnostic.goto_next|,
 ---              |renderDiagnostic| will cycle diagnostics,
@@ -58,7 +58,7 @@
 ---            - If called with |current|:
 ---              Searches for diagnostics only in the
 ---              current cursor line.
---- 'openmove' - Open the move.toml file for the current package.
+--- 'openCargo' - Open the Cargo.toml file for the current package.
 --- 'openDocs' - Open docs.rs documentation for the symbol under the cursor.
 --- 'parentModule' - Open the current module's parent module.
 --- 'workspaceSymbol {onlyTypes?|allSymbols?} {query?}'
@@ -75,14 +75,15 @@
 --- 'syntaxTree' - View the syntax tree.
 --- 'view {mir|hir}' - View MIR or HIR.
 --- 'flyCheck' {run?|clear?|cancel?}
----            - Run `move check` or another compatible command (f.x. `clippy`)
+---            - Run `cargo check` or another compatible command (f.x. `clippy`)
 ---              in a background thread and provide LSP diagnostics based on
 ---              the output of the command.
----              Useful in large projects where running `move check` on each save
+---              Useful in large projects where running `cargo check` on each save
 ---              can be costly.
 ---              Defaults to `flyCheck run` if called without an argument.
 --- 'logFile' - Open the move-analyzer log file.
 ---
+---The ':Movec' command can be used to interact with rustc.
 ---It accepts the following subcommands:
 ---
 --- 'unpretty {args[]}' - Opens a buffer with a textual representation of the MIR or others things,
