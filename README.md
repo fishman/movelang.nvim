@@ -1,19 +1,19 @@
 <!-- markdownlint-disable -->
 <br />
 <div align="center">
-  <a href="https://github.com/fishman/nvim-movelang">
-    <img src="./nvim-movelang.svg" alt="nvim-movelang">
+  <a href="https://github.com/fishman/movelang.nvim">
+    <img src="./movelang.nvim.svg" alt="movelang.nvim">
   </a>
   <p align="center">
     <br />
-    <a href="./doc/nvim-movelang.txt"><strong>Explore the docs »</strong></a>
+    <a href="./doc/movelang.nvim.txt"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/fishman/nvim-movelang/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml">Report Bug</a>
+    <a href="https://github.com/fishman/movelang.nvim/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml">Report Bug</a>
     ·
-    <a href="https://github.com/fishman/nvim-movelang/issues/new?assignees=&labels=enhancement&projects=&template=feature_request.yml">Request Feature</a>
+    <a href="https://github.com/fishman/movelang.nvim/issues/new?assignees=&labels=enhancement&projects=&template=feature_request.yml">Request Feature</a>
     ·
-    <a href="https://github.com/fishman/nvim-movelang/discussions/new?category=q-a">Ask Question</a>
+    <a href="https://github.com/fishman/movelang.nvim/discussions/new?category=q-a">Ask Question</a>
   </p>
   <p>
     <strong>
@@ -54,11 +54,11 @@
 [nix-url]: https://nixos.org/
 [rust-shield]: https://img.shields.io/badge/Move-000000?style=for-the-badge&logo=rust&logoColor=white
 [rust-url]: https://www.rust-lang.org/
-[issues-shield]: https://img.shields.io/github/issues/fishman/nvim-movelang.svg?style=for-the-badge
-[issues-url]: https://github.com/fishman/nvim-movelang/issues
-[license-shield]: https://img.shields.io/github/license/fishman/nvim-movelang.svg?style=for-the-badge
-[license-url]: https://github.com/fishman/nvim-movelang/blob/master/LICENSE
-[ci-shield]: https://img.shields.io/github/actions/workflow/status/fishman/nvim-movelang/nix-build.yml?style=for-the-badge
-[ci-url]: https://github.com/fishman/nvim-movelang/actions/workflows/nix-build.yml
-[luarocks-shield]: https://img.shields.io/luarocks/v/fishman/nvim-movelang?logo=lua&color=purple&style=for-the-badge
-[luarocks-url]: https://luarocks.org/modules/fishman/nvim-movelang
+[issues-shield]: https://img.shields.io/github/issues/fishman/movelang.nvim.svg?style=for-the-badge
+[issues-url]: https://github.com/fishman/movelang.nvim/issues
+[license-shield]: https://img.shields.io/github/license/fishman/movelang.nvim.svg?style=for-the-badge
+[license-url]: https://github.com/fishman/movelang.nvim/blob/master/LICENSE
+[ci-shield]: https://img.shields.io/github/actions/workflow/status/fishman/movelang.nvim/nix-build.yml?style=for-the-badge
+[ci-url]: https://github.com/fishman/movelang.nvim/actions/workflows/nix-build.yml
+[luarocks-shield]: https://img.shields.io/luarocks/v/fishman/movelang.nvim?logo=lua&color=purple&style=for-the-badge
+[luarocks-url]: https://luarocks.org/modules/fishman/movelang.nvim
