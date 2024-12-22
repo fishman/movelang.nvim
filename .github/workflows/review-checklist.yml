@@ -35,7 +35,7 @@ jobs:
               repo: context.repo.repo,
               body: `### Review Checklist
 
-            Does this PR follow the [Contribution Guidelines](https://github.com/mrcjkb/rustaceanvim/blob/master/CONTRIBUTING.md)? Following is a _partial_ checklist:
+            Does this PR follow the [Contribution Guidelines](https://github.com/fishman/movelang.nvim/blob/master/CONTRIBUTING.md)? Following is a _partial_ checklist:
 
             Proper [conventional commit](https://www.conventionalcommits.org/en/v1.0.0/) scoping:
 

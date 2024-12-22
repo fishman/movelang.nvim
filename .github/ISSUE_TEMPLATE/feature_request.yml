@@ -1,5 +1,5 @@
 name: Feature request
-description: Request an enhancement for rustaceanvim
+description: Request an enhancement for movelang
 labels: [enhancement]
 body:
 
@@ -10,8 +10,8 @@ body:
         >
         > Before requesting:
         > 
-        > - Search [existing issues](https://github.com/mrcjkb/rustaceanvim/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement).
-        > - If you are reporting a bug, please use the [correct form](https://github.com/mrcjkb/rustaceanvim/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml).
+        > - Search [existing issues](https://github.com/fishman/movelang.nvim/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement).
+        > - If you are reporting a bug, please use the [correct form](https://github.com/fishman/movelang.nvim/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml).
 
   - type: textarea
     attributes:

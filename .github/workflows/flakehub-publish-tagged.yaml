@@ -24,6 +24,6 @@ jobs:
       - uses: "DeterminateSystems/flakehub-push@main"
         with:
           visibility: "public"
-          name: "mrcjkb/rustaceanvim"
+          name: "fishman/movelang.nvim"
           tag: "${{ inputs.tag }}"
           

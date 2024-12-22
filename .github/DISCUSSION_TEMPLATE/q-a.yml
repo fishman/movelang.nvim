@@ -4,7 +4,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for your interest in rustaceanvim 🦀
+        Thanks for your interest in movelang 🦀
         Please follow these instructions, fill every question, and do every step. 🙏
   - type: checkboxes
     id: checks
@@ -12,19 +12,19 @@ body:
       label: Checked other resources
       description: Please confirm and check all the following options.
       options:
-        - label: This is not a bug report or feature request (Please use [issues](https://github.com/mrcjkb/rustaceanvim/issues/new/choose) for those).
+        - label: This is not a bug report or feature request (Please use [issues](https://github.com/fishman/movelang.nvim/issues/new/choose) for those).
           required: true
-        - label: This is a question about rustaceanvim, not rust-analyzer or Neovim.
+        - label: This is a question about movelang, not rust-analyzer or Neovim.
           required: true
-        - label: This is [not a question about autocompletion](https://github.com/mrcjkb/rustaceanvim?tab=readme-ov-file#im-having-issues-with-autocompletion).
+        - label: This is [not a question about autocompletion](https://github.com/fishman/movelang.nvim?tab=readme-ov-file#im-having-issues-with-autocompletion).
           required: true
         - label: I have read the README.
           required: true
-        - label: I have read the [FAQ](https://github.com/mrcjkb/rustaceanvim?tab=readme-ov-file#left_speech_bubble-faq).
+        - label: I have read the [FAQ](https://github.com/fishman/movelang.nvim?tab=readme-ov-file#left_speech_bubble-faq).
           required: true
-        - label: I have searched for a solution using `:h rustaceanvim`.
+        - label: I have searched for a solution using `:h movelang`.
           required: true
-        - label: I have searched [existing discussions](https://github.com/mrcjkb/rustaceanvim/discussions).
+        - label: I have searched [existing discussions](https://github.com/fishman/movelang.nvim/discussions).
           required: true
         - label: I have searched the existing issues/discussions of other plugins related to this question (if applicable).
           required: false
@@ -41,7 +41,7 @@ body:
 
         Write a short description explaining what you are doing, what you expect to happen, and what is currently happening.
       placeholder: |
-        * I'm trying to use the `rustaceanvim` plugin to do X.
+        * I'm trying to use the `movelang` plugin to do X.
         * I expect to see Y.
         * Instead, it does Z.
     validations:
@@ -52,7 +52,7 @@ body:
       label: Example Code
       description: |
         Please add a self-contained, [minimal, reproducible, example](https://stackoverflow.com/help/minimal-reproducible-example) with your use case.
-        You can use [the minimal config as a template](https://github.com/mrcjkb/rustaceanvim/blob/master/troubleshooting/minimal.lua).
+        You can use [the minimal config as a template](https://github.com/fishman/movelang.nvim/blob/master/troubleshooting/minimal.lua).
         
         If a maintainer can copy it, run it, and see it right away, there's a much higher chance that you'll be able to get help.
         
@@ -68,11 +68,11 @@ body:
         require('lazy.minit').repro {
           spec = {
             {
-              'mrcjkb/rustaceanvim',
+              'fishman/movelang.nvim',
               version = '^5',
               init = function()
-                -- Configure rustaceanvim here
-                vim.g.rustaceanvim = {}
+                -- Configure movelang here
+                vim.g.movelang = {}
               end,
               lazy = false,
             },
@@ -96,7 +96,7 @@ body:
       required: true
   - type: textarea
     attributes:
-      label: "Output of :checkhealth rustaceanvim"
+      label: "Output of :checkhealth movelang"
       render: "console"
       placeholder: |
         Please paste the output here, as it may contain important information for debugging.
