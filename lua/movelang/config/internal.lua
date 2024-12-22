@@ -4,6 +4,7 @@ local config = require('movelang.config')
 local executors = require('movelang.executors')
 local os = require('movelang.os')
 local server_config = require('movelang.config.server')
+local highlight = require('movelang.highlight')
 
 local MovelangConfig
 
@@ -141,6 +142,21 @@ local MovelangDefaultConfig = {
     open_url = function(url)
       require('movelang.os').open_url(url)
     end,
+
+    ---@type table Options applied for semantic token highlighting
+    ---Configuration for semantic token highlighting
+    highlighting = {
+      ---Enable semantic token highlighting based on LSP documentSymbol responses
+      ---@type boolean
+      --- default: true
+      enable = true,
+
+      ---Minimum time (in milliseconds) between highlight updates
+      ---Lower values may impact performance
+      ---@type integer
+      --- default: 300
+      update_delay = 300,
+    },
   },
 
   --- all the opts to send to the LSP client
@@ -308,6 +324,10 @@ if opts.dap and opts.dap.adapter then
     ---@diagnostic disable-next-line: inject-field
     MovelangConfig.dap.adapter = user_adapter
   end
+end
+
+if MovelangConfig.tools.highlighting.enable then
+  highlight.setup()
 end
 
 local check = require('movelang.config.check')

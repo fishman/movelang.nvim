@@ -1,5 +1,5 @@
 {
-  description = "A fork setup-less and lspconfig-free of rust-tools.nvim";
+  description = "A mysten-labs move language plugin based on rustaeceanvim";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
@@ -25,7 +25,7 @@
     vimcats,
     ...
   }: let
-    name = "rustaceanvim";
+    name = "movelang";
 
     plugin-overlay = import ./nix/plugin-overlay.nix {
       inherit name self;
@@ -132,7 +132,7 @@
         };
 
         devShell = pkgs.nvim-nightly-tests.overrideAttrs (oa: {
-          name = "rustaceanvim devShell";
+          name = "movelang devShell";
           shellHook = ''
             ${pre-commit-check.shellHook}
             ln -fs ${pkgs.luarc-to-json luarc-nightly} .luarc.json
@@ -159,11 +159,11 @@
         };
 
         packages = rec {
-          default = rustaceanvim;
+          default = movelang;
           inherit docgen;
           inherit
             (pkgs)
-            rustaceanvim
+            movelang
             codelldb
             nvim-minimal-stable
             nvim-minimal-nightly

@@ -2,8 +2,8 @@
   self,
   name,
 }: final: prev: let
-  rustaceanvim-luaPackage-override = luaself: luaprev: {
-    rustaceanvim = luaself.callPackage ({
+  movelang-luaPackage-override = luaself: luaprev: {
+    movelang = luaself.callPackage ({
       luaOlder,
       buildLuarocksPackage,
       lua,
@@ -11,17 +11,17 @@
       buildLuarocksPackage {
         pname = name;
         version = "scm-1";
-        knownRockspec = "${self}/rustaceanvim-scm-1.rockspec";
+        knownRockspec = "${self}/movelang-scm-1.rockspec";
         src = self;
         disabled = luaOlder "5.1";
       }) {};
   };
 
   lua5_1 = prev.lua5_1.override {
-    packageOverrides = rustaceanvim-luaPackage-override;
+    packageOverrides = movelang-luaPackage-override;
   };
   luajit = prev.luajit.override {
-    packageOverrides = rustaceanvim-luaPackage-override;
+    packageOverrides = movelang-luaPackage-override;
   };
 
   lua51Packages = final.lua5_1.pkgs;
@@ -37,12 +37,12 @@ in {
   vimPlugins =
     prev.vimPlugins
     // {
-      rustaceanvim = final.neovimUtils.buildNeovimPlugin {
-        luaAttr = final.luajitPackages.rustaceanvim;
+      movelang = final.neovimUtils.buildNeovimPlugin {
+        luaAttr = final.luajitPackages.movelang;
       };
     };
 
-  rustaceanvim = final.vimPlugins.rustaceanvim;
+  movelang = final.vimPlugins.movelang;
 
   codelldb = final.vscode-extensions.vadimcn.vscode-lldb.adapter;
 }

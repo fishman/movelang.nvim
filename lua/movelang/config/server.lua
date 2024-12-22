@@ -66,6 +66,12 @@ local function make_movelang_capabilities()
     capabilities.textDocument.completion.completionItem.snippetSupport = true
   end
 
+  -- Enable document symbol support
+  capabilities.textDocument.documentSymbol = {
+    dynamicRegistration = true,
+    hierarchicalDocumentSymbolSupport = true,
+  }
+
   -- send actions with hover request
   capabilities.experimental = {
     hoverActions = true,

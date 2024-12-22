@@ -3,7 +3,7 @@
 
 local _MODREV, _SPECREV = 'scm', '-1'
 rockspec_format = '3.0'
-package = 'rustaceanvim'
+package = 'movelang'
 version = _MODREV .. _SPECREV
 
 dependencies = {
@@ -15,13 +15,13 @@ test_dependencies = {
 }
 
 source = {
-  url = 'git://github.com/mrcjkb/' .. package,
+  url = 'git://github.com/fishman/' .. package,
 }
 
 build = {
   type = 'builtin',
-  copy_directories = { 
+  copy_directories = {
     'doc',
-    'ftplugin'
+    'ftplugin',
   },
 }
