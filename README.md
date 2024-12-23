@@ -40,6 +40,15 @@
 > - No dependency on `lspconfig`.
 > - Lazy initialization by design.
 
+## :inbox_tray: Installation
+
+### [`lazy.nvim`](https://github.com/folke/lazy.nvim)
+
+```lua
+{
+  'fishman/movelang-nvim',
+}
+```
 ## Inspiration
 
 <!-- markdownlint-disable -->

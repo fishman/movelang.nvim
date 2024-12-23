@@ -72,6 +72,19 @@ local function make_movelang_capabilities()
     hierarchicalDocumentSymbolSupport = true,
   }
 
+  -- Add inlay hint support
+  capabilities.textDocument.inlayHint = {
+    dynamicRegistration = true,
+    resolveSupport = {
+      properties = {
+        'textEdits',
+        'tooltip',
+        'location',
+        'command',
+      },
+    },
+  }
+
   -- send actions with hover request
   capabilities.experimental = {
     hoverActions = true,
