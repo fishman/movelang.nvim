@@ -17,13 +17,10 @@ M.get_active_movelang_clients = function(bufnr, filter)
     client_filter.bufnr = bufnr
   end
   local clients = vim.lsp.get_clients(client_filter)
-  if filter and filter.exclude_rustc_target then
+  if filter then
     clients = vim.tbl_filter(function(client)
       local move_target = vim.tbl_get(client, 'config', 'settings', 'move-analyzer', 'move', 'target')
-      if filter.exclude_rustc_target == rustc.DEFAULT_RUSTC_TARGET and move_target == nil then
-        return false
-      end
-      return move_target ~= filter.exclude_rustc_target
+      return move_target
     end, clients)
   end
 

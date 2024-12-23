@@ -2,7 +2,26 @@
 local config = require('movelang.config.internal')
 local compat = require('movelang.compat')
 
+local function setup_move_parser()
+  local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
+
+  -- Only register if not already registered
+  if not parser_config.move then
+    parser_config['move'] = {
+      install_info = {
+        url = 'https://github.com/fishman/tree-sitter-move',
+        files = { 'src/parser.c' },
+        branch = 'main',
+      },
+      filetype = 'move',
+      maintainers = { '@fishman' },
+    }
+  end
+end
+
 if not vim.g.loaded_movelang then
+  setup_move_parser()
+
   require('movelang.config.check').check_for_lspconfig_conflict(vim.schedule_wrap(function(warn)
     vim.notify_once(warn, vim.log.levels.WARN)
   end))
